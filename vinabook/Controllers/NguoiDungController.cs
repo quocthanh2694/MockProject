@@ -20,7 +20,9 @@ namespace Vinabook.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-
+            //Username: myvinabook@gmail.com 
+           // Password: vinabook123
+            //
             return View();
         }
 

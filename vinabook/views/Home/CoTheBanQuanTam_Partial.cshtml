@@ -10,8 +10,8 @@
         @foreach (var item in Model)
         {
             <div class="single-product">
-                <div class="product-f-image">
-                    <img src="@Url.Content("~/Content/HinhAnhSP/"+item.AnhBia)" alt="" />
+                <div class="product-f-image" style="height:250px">
+                    <img src="@Url.Content("~/Content/HinhAnhSP/"+item.AnhBia)" alt="@item.TenSach" style="height:240px !important;width:auto;text-align:center"/>
                     <div class="product-hover">
 
                         <a class="add-to-cart-link" style="padding:0">
