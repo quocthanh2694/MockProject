@@ -8,6 +8,7 @@ using System.Web.Security;
 using System.Data.Entity;
 using System.Net.Mail;
 using System.Net;
+using System.Text;
 
 namespace Vinabook.Controllers
 {
@@ -244,6 +245,70 @@ namespace Vinabook.Controllers
             }
             Session["TaiKhoan"] = null;
             return RedirectToAction("Index","Home");
+        }
+        public ActionResult QuenMatKhau(string email)
+        {
+            int flag = 0;
+            string matkhau = "";
+            matkhau = RandomString(10);
+
+            List<KhachHang> listUser = db.KhachHangs.ToList();
+            foreach (KhachHang k in listUser)
+            {
+                if (k.Email == email)
+                {
+                    flag = 1;
+                    k.MatKhau = matkhau;
+                    db.SaveChanges();
+                    break;
+                }
+            }
+
+            if (flag == 0)
+            {
+                return Json(new { done=0 });
+            }
+
+
+            var body = "<p>Email From: {0} ({1})</p><p> </p><p>{2}</p><p>Mật khẩu mới của bạn là: {3}</p>";
+            string content = "Cảm  ơn bạn đã sử dụng hệ thống Vinabook.";
+            var message = new MailMessage();
+            message.To.Add(new MailAddress(email));  // replace with valid value 
+                                                     // message.To.Add(new MailAddress("mr.vothanhthien@gmail.com"));
+            message.From = new MailAddress("myvinabook@gmail.com");  // replace with valid value
+            message.Subject = "Reset password for account Vinabook";
+            message.Body = string.Format(body, "Vinabook", "Send to: " + email, content, matkhau);
+            message.IsBodyHtml = true;
+
+            using (var smtp = new SmtpClient())
+            {
+                var credential = new NetworkCredential
+                {
+                    UserName = "myvinabook@gmail.com",  // replace with valid value
+                    Password = "vinabook123"  // replace with valid value
+                };
+                smtp.Credentials = credential;
+                smtp.Host = "smtp.gmail.com";
+                smtp.Port = 587;
+                smtp.EnableSsl = true;
+                smtp.Send(message);
+                //   return RedirectToAction("Sent");
+            }
+
+            return Json(new { done=1 });
+        }
+        private string RandomString(int size)
+        {
+            Random random = new Random((int)DateTime.Now.Ticks);
+            StringBuilder builder = new StringBuilder();
+            char ch;
+            for (int i = 0; i < size; i++)
+            {
+                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
+                builder.Append(ch);
+            }
+
+            return builder.ToString();
         }
 
     }

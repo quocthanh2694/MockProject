@@ -27,8 +27,26 @@
             <div class="col-md-3 text-center" style="position:absolute;right:110px">
                 <a class="DangKyStyle btn btn-block" href="/NguoiDung/Register"> Đăng Ký </a>
             </div>
+
+            <br /><br />
+            <label id="quenMatKhau"  style="font-size:17px;color:#0814ff;cursor:pointer">Quên mật khẩu !</label>
+            <p></p>
+
+            <div style="display:none" id="QuenMatKhauContent">
+                <input style="background-color:#faa227;color:black !important" type="text" placeholder="Type Your Email" name="email" id="email" ><br>
+                <br />
+                <div style="position:absolute;right:110px">
+                    <button type="button"  class="pull-right btnsubmit btn-block btn" id="guimail">Gửi mail</button>
+                </div>
+            </div>
+
+            <p>
+                <br />
+            </p>
+            <label id="passwordOk"  style="font-size:16px;color:#ce1a1a" hidden>Mật khẩu đã được gửi đếm mail của bạn!</label>
         </div>
     </form>
+
 
   @*  *@
 
@@ -49,3 +67,38 @@
         margin-top: 30px;
     }
 </style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $("#guimail").click(function () {
+          //  function GuiMail() {
+                
+            var email = $("#email").val();
+            if (email.trim().toString() == "") {
+                $("#email").focus();
+                return;
+            }
+                $.ajax({
+                    type: 'POST',
+                    url: '/NguoiDung/QuenMatKhau',
+                    data: { email },
+                    success: function (data) {
+                        if (data.done == 1) {
+                            $("#passwordOk").show(300);
+                            $("#passwordOk").html("Mật khẩu đã được gửi đếm mail của bạn!");
+                        }
+                        else {
+                            $("#passwordOk").show(300);
+                            $("#passwordOk").html("Email của bạn chưa được đăng ký");
+
+                        }
+                    }
+                });
+          //  }
+        });
+    $("#quenMatKhau").click(function () {
+        $("#QuenMatKhauContent").toggle(200);
+    });
+    
+   
+});
+</script>
