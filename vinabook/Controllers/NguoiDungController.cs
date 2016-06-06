@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using Vinabook.Models;
 using System.Web.Security;
 using System.Data.Entity;
+using System.Net.Mail;
+using System.Net;
 
 namespace Vinabook.Controllers
 {
@@ -21,7 +23,7 @@ namespace Vinabook.Controllers
         public ActionResult Login()
         {
             //Username: myvinabook@gmail.com 
-           // Password: vinabook123
+            // Password: vinabook123
             //
             return View();
         }
@@ -46,22 +48,28 @@ namespace Vinabook.Controllers
             //TempData["UserName"] = usr.TaiKhoan;
             if (usr != null)
             {
+                if (usr.IsActive == "0")
+                {
+                    ViewBag.ThongBao = "Tài khoản chưa được kích hoạt. Vui lòng kích hoạt qua email đã đăng ký!!!";
+                    return View();
+                }
+
                 //create seession/ token for loged in user
-               // FormsAuthentication.SetAuthCookie(usr.TaiKhoan, false);
+                // FormsAuthentication.SetAuthCookie(usr.TaiKhoan, false);
                 Session["TaiKhoan"] = usr;
                 //lay gio hang cua khach hang 
                 if (urlString.Trim() != "")
                 {
                     string[] url = urlString.Split('/');
-                    if (url[url.Length-1] == "Login")
+                    if (url[url.Length - 1] == "Login")
                         return RedirectToAction("Index", "Home");
                     else
                         return Redirect(urlString);
                 }
                 else
-                return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home");
             }
-            
+
             TempData["Message"] = "Username or password is wrong";
             ViewBag.ThongBao = "Tên tài khoản hoặc mật khẩu không đúng!";
 
@@ -90,6 +98,9 @@ namespace Vinabook.Controllers
         [ValidateInput(false)]
         public ActionResult Register([Bind(Include = "MaKH,HoTen, NgaySinh, GioiTinh, DienThoai,TaiKhoan, MatKhau,Email,DiaChi")]KhachHang kh)
         {
+            string[] full = Request.Url.ToString().Split('/');
+            //full[2] domain
+
             if (ModelState.IsValid)
             {
                 var checkUserName = db.KhachHangs.Any(s => s.TaiKhoan == kh.TaiKhoan);
@@ -99,21 +110,56 @@ namespace Vinabook.Controllers
                 }
                 else
                 {
+                    kh.IsActive = "0";
+                    //Guid guidName = new Guid();
+                    Guid guidName = Guid.NewGuid();
+                    Guid guidName2 = Guid.NewGuid();
+                    Guid guidName1 = Guid.NewGuid();
+                 
 
-                    Guid guidName = new Guid();
-
+                    kh.code = guidName.ToString() + guidName1.ToString() + guidName2.ToString();
                     //Chèn dữ liệu vào bảng khách hàng
                     db.KhachHangs.Add(kh);
 
                     //Lưu vào csdl 
                     db.SaveChanges();
-                    ViewBag.thanhcong = "Đăng ký thành công!";
-                   
+                    SendMail(kh.Email, kh.code, full[2]);
+                    ViewBag.thanhcong = "Đăng ký tài khoản thành công!";
+
                 }
             }
             return View();
             return RedirectToAction("XacThucTaiKhoan");
         }
+        void SendMail(string email, string code, string domain)
+        {
+            var body = "<p>Email From: {0} ({1})</p><p> </p><p>{2}</p><p><a href=\"http://{3}/Xac-Thuc-Tai-Khoan-Nguoi-Dung/{4}\"> Vui lòng nhấn vào đây để xác nhận</a></p>";
+            string content = "Cảm  ơn bạn đã sử dụng hệ thống Vinabook.";
+            var message = new MailMessage();
+            message.To.Add(new MailAddress(email));  // replace with valid value 
+                                                     // message.To.Add(new MailAddress("mr.vothanhthien@gmail.com"));
+            message.From = new MailAddress("myvinabook@gmail.com");  // replace with valid value
+            message.Subject = "Authentication for Vinabook";
+            message.Body = string.Format(body, "Vinabook", "Send to: " + email, content, domain,code);
+            message.IsBodyHtml = true;
+
+            using (var smtp = new SmtpClient())
+            {
+                var credential = new NetworkCredential
+                {
+                    UserName = "myvinabook@gmail.com",  // replace with valid value
+                    Password = "vinabook123"  // replace with valid value
+                };
+                smtp.Credentials = credential;
+                smtp.Host = "smtp.gmail.com";
+                smtp.Port = 587;
+                smtp.EnableSsl = true;
+                smtp.Send(message);
+                //   return RedirectToAction("Sent");
+            }
+        }
+        //return View(model);
+
         //cap nhat thong tin khách hang
         public ActionResult Details(int? id)
         {
@@ -122,7 +168,7 @@ namespace Vinabook.Controllers
             return View(khachhang);
         }
         [HttpPost]
-       
+
         public ActionResult Details(KhachHang khachhang)
         {
             try
@@ -178,8 +224,26 @@ namespace Vinabook.Controllers
         //    //}
         //    return Json(new { tb = 0 });
         //}
-        public ActionResult XacThucTaiKhoan() {
-            return View();
+
+        public ActionResult XacThucTaiKhoan(string id)
+        {
+            if (id !=null)
+            {
+                List<KhachHang> listUser = db.KhachHangs.ToList();
+                foreach (KhachHang k in listUser)
+                {
+                    if (k.code == id)
+                    {
+                        Session["TaiKhoan"] = k;
+                        k.IsActive = "1";
+                        db.SaveChanges();
+                       return View();
+                    }
+                }
+                
+            }
+            Session["TaiKhoan"] = null;
+            return RedirectToAction("Index","Home");
         }
 
     }

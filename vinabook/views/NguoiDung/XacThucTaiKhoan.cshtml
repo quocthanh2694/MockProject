@@ -1,8 +1,15 @@
 ﻿
 @{
     ViewBag.Title = "XacThucTaiKhoan";
+    Layout = null;
 }
 
-<h3>Tài khoản của bạn đã kích hoạt thành công</h3>
+<h4>Your account is successful to active. Redirecting to Home...</h4>
 
 <a class="btn btn-default" href="/">Về trang chủ</a>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        window.location.href='/';
+
+    });
+</script>
