@@ -30,7 +30,6 @@ namespace Vinabook.Models
         public virtual DbSet<ChiTietDonHang> ChiTietDonHangs { get; set; }
         public virtual DbSet<ChuDe> ChuDes { get; set; }
         public virtual DbSet<DonHang> DonHangs { get; set; }
-        public virtual DbSet<KhachHang> KhachHangs { get; set; }
         public virtual DbSet<KhuyenMai> KhuyenMais { get; set; }
         public virtual DbSet<NhaXuatBan> NhaXuatBans { get; set; }
         public virtual DbSet<Sach> Saches { get; set; }
@@ -38,6 +37,7 @@ namespace Vinabook.Models
         public virtual DbSet<TacGia> TacGias { get; set; }
         public virtual DbSet<ThamGia> ThamGias { get; set; }
         public virtual DbSet<Adminnistrator> Adminnistrators { get; set; }
+        public virtual DbSet<KhachHang> KhachHangs { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

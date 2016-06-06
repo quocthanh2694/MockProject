@@ -99,14 +99,20 @@ namespace Vinabook.Controllers
                 }
                 else
                 {
-                    ViewBag.thanhcong = "Đăng ký thành công!";
+
+                    Guid guidName = new Guid();
+
                     //Chèn dữ liệu vào bảng khách hàng
                     db.KhachHangs.Add(kh);
+
                     //Lưu vào csdl 
                     db.SaveChanges();
+                    ViewBag.thanhcong = "Đăng ký thành công!";
+                   
                 }
             }
             return View();
+            return RedirectToAction("XacThucTaiKhoan");
         }
         //cap nhat thong tin khách hang
         public ActionResult Details(int? id)
@@ -172,5 +178,9 @@ namespace Vinabook.Controllers
         //    //}
         //    return Json(new { tb = 0 });
         //}
+        public ActionResult XacThucTaiKhoan() {
+            return View();
+        }
+
     }
 }

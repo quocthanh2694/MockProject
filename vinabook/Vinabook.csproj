@@ -390,6 +390,7 @@
     <Content Include="Views\QuanLyTacGia\Edit.cshtml" />
     <Content Include="Views\QuanLyTacGia\Index.cshtml" />
     <Content Include="Views\QuanLyTacGia\TimKiemTacGia.cshtml" />
+    <Content Include="Views\NguoiDung\XacThucTaiKhoan.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
