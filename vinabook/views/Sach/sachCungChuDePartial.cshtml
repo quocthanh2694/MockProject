@@ -9,9 +9,21 @@
         <div class="thubmnail-recent" title="@title" data-toggle="tooltip">
             <img src="~/content/HinhAnhSP/@item.AnhBia" class="recent-thumb" alt="">
             <h2 style="line-height:2em; height:2em;overflow:hidden; margin:0 0 0.5em 0; color:black">
-                <a href="@Url.Action("XemChiTiet", new { @masach=item.MaSach })">
+                <a id="accd_@item.MaSach" href="@Url.Action("XemChiTiet", new { @masach=item.MaSach })">
                     @item.TenSach
             </a>
+                <span hidden id="tensachccd_@item.MaSach">@Html.Raw(item.TenSach)</span>
+                <script>
+                                abc();
+                                function abc(){
+                                    debugger;
+                                    var abcd=document.getElementById('tensachccd_@item.MaSach').innerHTML;
+                                    if(abcd.length>20)
+                                        abcd=abcd.substring(0,20);
+                                    var x = xulytiengviet(abcd);
+                                    var s = document.getElementById("accd_@item.MaSach").href="/XemChiTiet/"+ x +"-"+@item.MaSach;
+                                }
+                </script>
         </h2>
 
         <div style="color:black">

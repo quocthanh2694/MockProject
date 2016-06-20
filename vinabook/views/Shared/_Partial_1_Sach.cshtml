@@ -35,10 +35,22 @@
 
             string title = "Tên:           " + item.TenSach + "\nNXB:          " + item.NhaXuatBan.TenNXB + "\nChủ đề:     " + item.ChuDe.TenChuDe +"\nTác Giả:   "+tenTacGia+ "\nNội dung: " + item.MoTa ;
             <li>
-
+                  
                 <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
                     <div class="thumbnail no-under">
-                        <a href="@Url.Action("XemChiTiet","Sach", new { @masach=item.MaSach })" title="@title" data-toggle="tooltip">
+                        <a id="a_@item.MaSach" href="/XemChiTiet/-@item.MaSach" title="@title" data-toggle="tooltip">
+                            <span hidden id="tensach_@item.MaSach" >@Html.Raw(item.TenSach)</span>
+                            <script>
+                                abc();
+                                function abc(){
+                                    debugger;
+                                    var abcd=document.getElementById('tensach_@item.MaSach').innerHTML;
+                                    if(abcd.length>20)
+                                        abcd=abcd.substring(0,20);
+                                    var x = xulytiengviet(abcd);
+                                    var s = document.getElementById("a_@item.MaSach").href="/XemChiTiet/"+ x +"-"+@item.MaSach;
+                                }
+                            </script>
                             <img class="img-responsive" src="@Url.Content("/Content/HinhAnhSP/"+item.AnhBia)" alt="@item.TenSach"  style="height:186px">
                             <div class="caption">
                                 @* Hiển thị tên 2 dòng *@

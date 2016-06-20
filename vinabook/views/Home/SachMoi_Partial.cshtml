@@ -19,7 +19,19 @@
 
                         </a>
 
-                        <a href="@Url.Action("XemChiTiet","Sach", new { @masach=item.MaSach })" class="view-details-link"><i class="fa fa-link"></i> Xem Chi Tiết</a>
+                        <a id="acsm_@item.MaSach" href="@Url.Action("XemChiTiet","Sach", new { @masach=item.MaSach })" class="view-details-link"><i class="fa fa-link"></i> Xem Chi Tiết</a>
+                        <span hidden id="tensachsm_@item.MaSach">@Html.Raw(item.TenSach)</span>
+                        <script>
+                                abc();
+                                function abc(){
+                                    debugger;
+                                    var abcd=document.getElementById('tensachsm_@item.MaSach').innerHTML;
+                                    if(abcd.length>20)
+                                        abcd=abcd.substring(0,20);
+                                    var x = xulytiengviet(abcd);
+                                    var s = document.getElementById("acsm_@item.MaSach").href="/XemChiTiet/"+ x +"-"+@item.MaSach;
+                                }
+                        </script>
                     </div>
                 </div>
 

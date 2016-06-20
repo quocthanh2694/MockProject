@@ -54,23 +54,27 @@
             </tr>
 
         }
-
+        @{double tongTien = 0;string madonhang = "";}
+        @foreach (var item in Model)
+        {
+            tongTien += (double)item.productOrder.GiaBan * item.Quality;
+            madonhang += item.productOrder.MaSach;
+        }
         <tr>
             <th class="actions" colspan="4" >
-                <div class="coupon" hidden>
+                @*<div class="coupon" hidden>
                     <input type="text" placeholder="Mã khuyến mãi"  style="width:150px" id="coupon_code" class="input-text" name="coupon_code">
                     <input type="submit" onclick="KhuyenMai()" value="Áp dụng" name="apply_coupon" class="button">
                     <span id="SpanKhuyenMai" style="color:red"></span>
                     <span id="SpanGiaTriKhuyenMai" style="color:red"></span>
-                </div>
+                </div>*@
+
+                <a target="_blank" href="https://www.nganluong.vn/button_payment.php?receiver=quocthanh2694@gmail.com&product_name=@madonhang&price=@tongTien&return_url=http://thanhtoan.com/payment-success&comments=t%C3%ADch+h%E1%BB%A3p"><img src="https://www.nganluong.vn//css/newhome/img/button/buy-lg.png" border="0" /></a>
+
 
             </th>
             <th>Tổng(VNĐ):</th>
-            @{double tongTien = 0;}
-            @foreach (var item in Model)
-            {
-                tongTien += (double)item.productOrder.GiaBan * item.Quality;
-            }
+           
             <th>
                 <span id="KhuyenMaiBadge" class="badge badge-warning" style="position:relative;right:-20px;bottom:-5px;"></span>
                 <div id="tongtien_div" style="">

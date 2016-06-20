@@ -9,7 +9,19 @@
         @foreach (var item in Model)
         {
             string title = "Tên:           " + item.TenSach + "\nNXB:          " + item.NhaXuatBan.TenNXB + "\nChủ đề:     " + item.ChuDe.TenChuDe + "\nNội dung: " + item.MoTa;
-            <a href="@Url.Action("XemChiTiet", new { @masach=item.MaSach })" title="@title" data-toggle="tooltip">
+            <a id="agg_@item.MaSach" href="@Url.Action("XemChiTiet", new { @masach=item.MaSach })" title="@title" data-toggle="tooltip">
+                <span hidden id="tensachgg_@item.MaSach">@Html.Raw(item.TenSach)</span>
+                <script>
+                                abc();
+                                function abc(){
+                                    debugger;
+                                    var abcd=document.getElementById('tensachgg_@item.MaSach').innerHTML;
+                                    if(abcd.length>20)
+                                        abcd=abcd.substring(0,20);
+                                    var x = xulytiengviet(abcd);
+                                    var s = document.getElementById("agg_@item.MaSach").href="/XemChiTiet/"+ x +"-"+@item.MaSach;
+                                }
+                </script>
                 <div class="row no-under">
 
                     <div class="col-md-4">

@@ -8,8 +8,35 @@
         @foreach(var item in Model)
         { 
         <div class="single-wid-product">
-            <a href="@Url.Action("XemChiTiet", new { @masach=item.MaSach })"><img src="@Url.Content("~/Content/HinhAnhSP/"+item.AnhBia)" alt="" class="product-thumb" /></a>
-            <h2><a href="@Url.Action("XemChiTiet", new { @masach=item.MaSach })">@item.TenSach</a></h2>
+            <a id="a1_@item.MaSach" href="@Url.Action("XemChiTiet", new { @masach=item.MaSach })"><img src="@Url.Content("~/Content/HinhAnhSP/"+item.AnhBia)" alt="" class="product-thumb" /></a>
+            <span hidden id="tensach_@item.MaSach">@Html.Raw(item.TenSach)</span>
+            <script>
+                                abc();
+                                function abc(){
+                                    debugger;
+                                    var abcd=document.getElementById('tensach_@item.MaSach').innerHTML;
+                                    if(abcd.length>20)
+                                        abcd=abcd.substring(0,20);
+                                    var x = xulytiengviet(abcd);
+                                    var s = document.getElementById("a_@item.MaSach").href="/XemChiTiet/"+ x +"-"+@item.MaSach;
+                                }
+            </script>
+
+            <h2><a id="a2_@item.MaSach" href="@Url.Action("XemChiTiet", new { @masach=item.MaSach })" >@item.TenSach</a></h2>
+
+            <span hidden id="tensach_@item.MaSach">@Html.Raw(item.TenSach)</span>
+            <script>
+                                abc();
+                                function abc(){
+                                    debugger;
+                                    var abcd=document.getElementById('tensach_@item.MaSach').innerHTML;
+                                    if(abcd.length>20)
+                                        abcd=abcd.substring(0,20);
+                                    var x = xulytiengviet(abcd);
+                                    var s = document.getElementById("a_@item.MaSach").href="/XemChiTiet/"+ x +"-"+@item.MaSach;
+                                }
+            </script>
+
             <div class="product-wid-rating">
                 <i class="fa fa-star"></i>
                 <i class="fa fa-star"></i>

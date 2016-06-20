@@ -8,7 +8,21 @@
         @foreach (var item in Model)
         {
 
-            <li><a href="@Url.Action("SachTheoTacGia","Sach", new {@matacgia=@item.MaTacGia })">@item.TenTacGia</a></li>
+            <li><a id="atg_@item.MaTacGia" href="@Url.Action("SachTheoTacGia","Sach", new {@matacgia=@item.MaTacGia })">@item.TenTacGia</a></li>
+            <li hidden>
+                <span hidden id="tentg1_@item.MaTacGia">@Html.Raw(item.TenTacGia)</span>
+                <script>
+                    abc();
+                    function abc(){
+                        debugger;
+                        var abcd=document.getElementById('tentg1_@item.MaTacGia').innerHTML;
+                        if(abcd.length>30)
+                            abcd=abcd.substring(0,30);
+                        var x = xulytiengviet(abcd);
+                        var s = document.getElementById("atg_@item.MaTacGia").href="/Tac-Gia/"+ x +"-"+@item.MaTacGia;
+                    }
+                </script>
+            </li>
         }
 
     </ul>

@@ -9,7 +9,21 @@
         @foreach (var item in Model)
         {
 
-            <li><a href="@Url.Action("SachTheoNhaXuatban","Sach", new {@manxb=@item.MaNXB })">@item.TenNXB</a></li>
+            <li><a id="anxb_@item.MaNXB" href="@Url.Action("SachTheoNhaXuatban","Sach", new {@manxb=@item.MaNXB })">@item.TenNXB</a></li>
+            <li hidden>
+                <span hidden id="tennxb_@item.MaNXB">@Html.Raw(item.TenNXB)</span>
+                <script>
+                    abc();
+                    function abc(){
+                        debugger;
+                        var abcd=document.getElementById('tennxb_@item.MaNXB').innerHTML;
+                        if(abcd.length>30)
+                            abcd=abcd.substring(0,30);
+                        var x = xulytiengviet(abcd);
+                        var s = document.getElementById("anxb_@item.MaNXB").href="/nha-Xuat-ban/"+ x +"-"+@item.MaNXB;
+                    }
+                </script>
+            </li>
         }
 
     </ul>

@@ -7,7 +7,21 @@
         @foreach (var item in Model)
         {
 
-            <li><a href="@Url.Action("SachTheoChuDe","Sach", new {@machude=@item.MaChuDe })">@item.TenChuDe</a></li>
+            <li><a id="acd_@item.MaChuDe"  href="@Url.Action("SachTheoChuDe","Sach", new {@machude=@item.MaChuDe })">@item.TenChuDe</a></li>
+            <li hidden>
+                <span hidden id="tencd1_@item.MaChuDe">@Html.Raw(item.TenChuDe)</span>
+                <script>
+                    abc();
+                    function abc(){
+                        debugger;
+                        var abcd=document.getElementById('tencd1_@item.MaChuDe').innerHTML;
+                        if(abcd.length>30)
+                            abcd=abcd.substring(0,30);
+                        var x = xulytiengviet(abcd);
+                        var s = document.getElementById("acd_@item.MaChuDe").href="/Chu-De/"+ x +"-"+@item.MaChuDe;
+                    }
+                </script>
+            </li>
         }
        
         @*<li><a href="">Sony Smart TV - 2015</a></li>

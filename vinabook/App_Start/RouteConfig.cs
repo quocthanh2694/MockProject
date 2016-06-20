@@ -13,6 +13,34 @@ namespace Vinabook
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+
+            routes.MapRoute(
+name: "tacgia",
+url: "Tac-Gia/{alias}-{matacgia}",
+defaults: new { controller = "Sach", action = "SachTheoTacGia", id = UrlParameter.Optional }
+);
+
+
+
+            routes.MapRoute(
+name: "nhaxuatban",
+url: "Nha-xuat-ban/{alias}-{manxb}",
+defaults: new { controller = "Sach", action = "SachTheoNhaXuatBan", id = UrlParameter.Optional }
+);
+
+
+            routes.MapRoute(
+name: "chude",
+url: "Chu-De/{alias}-{machude}",
+defaults: new { controller = "Sach", action = "SachTheoChuDe", id = UrlParameter.Optional }
+);
+
+            routes.MapRoute(
+    name: "XemChiTiet",
+    url: "XemChiTiet/{alias}-{MaSach}",
+    defaults: new { controller = "Sach", action = "XemChiTiet", id = UrlParameter.Optional }
+);
+
             routes.MapRoute(
     name: "Authentication",
     url: "Xac-Thuc-Tai-Khoan-Nguoi-Dung/{id}",

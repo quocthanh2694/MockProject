@@ -20,11 +20,23 @@
 
                         </a>
 
-                        <a href="@Url.Action("XemChiTiet","Sach", new { @masach=item.MaSach })" class="view-details-link"><i class="fa fa-link"></i> Xem Chi Tiết</a>
+                        <a id="actbqt_@item.MaSach" href="@Url.Action("XemChiTiet","Sach", new { @masach=item.MaSach })" class="view-details-link"><i class="fa fa-link"></i> Xem Chi Tiết</a>
+                        <span hidden id="tensachctbqt_@item.MaSach">@Html.Raw(item.TenSach)</span>
+                        <script>
+                                abc();
+                                function abc(){
+                                    debugger;
+                                    var abcd=document.getElementById('tensachctbqt_@item.MaSach').innerHTML;
+                                    if(abcd.length>20)
+                                        abcd=abcd.substring(0,20);
+                                    var x = xulytiengviet(abcd);
+                                    var s = document.getElementById("actbqt_@item.MaSach").href="/XemChiTiet/"+ x +"-"+@item.MaSach;
+                                }
+                        </script>
                     </div>
                 </div>
 
-                <h2><a href="@Url.Action("XemChiTiet", "Sach", new { @masach=item.MaSach })">@item.TenSach</a></h2>
+                <h2><a href="@Url.Action("XemChiTiet", "Sach", new { @masach=item.MaSach })" >@item.TenSach </a></h2>
 
                 <div class="product-carousel-price">
                     <ins>@string.Format("{0:0,0}", item.GiaBan) VNĐ</ins> <del>@string.Format("{0:0,0}", item.GiaBan + (10 * item.GiaBan / 100))</del>
